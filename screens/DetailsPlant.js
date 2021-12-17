@@ -33,7 +33,6 @@ export default function DetailsPlant() {
                     </View>
                 </View>
             </View>
-            
         </SafeAreaView>
     )
 }
