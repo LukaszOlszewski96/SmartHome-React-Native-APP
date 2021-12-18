@@ -1,14 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, Image } from 'react-native';
 import {Icon} from 'react-native-elements';
-
+import axios from 'axios';
 
 export default function DetailsPlant() {
+
+    const [ value, setValue ] = useState('');
+
+    const getSensorData = () => {
+        axios
+            .get("https://smart-home-68646-default-rtdb.firebaseio.com/Sensors/Soil_Moisture/Sensor_001/Values/Humidity.json")
+            .then((res) => {
+                setValue(Math.round(res.data));
+            })
+    }
+
+    useEffect( () => {
+        getSensorData();
+    }, []);
+
     return (
         <SafeAreaView style = { styles.conteinerDetailsPlant}>
             <View style = {styles.cardImage}>
-                <View style = { styles.arrowConteiner }>
-                    <Icon style = {styles.arrow} size = {30} name = "arrow-back"/>
+                <View  style = { styles.arrowConteiner }>
+                    <Icon  style = {styles.arrow} size = {30} name = "arrow-back"/>
                 </View>
                 <View style = {styles.imageContainer}>
                     <Image style = {styles.image} source = {require('../assets/plants/plant3.png')}/>
@@ -21,7 +36,7 @@ export default function DetailsPlant() {
                 <View style = {styles.parameterPlant}>
                     <Icon iconStyle = {styles.icon} name = 'water-outline' type = 'ionicon'/>
                     <View style = {styles.parameterBox}>
-                        <Text style = {styles.value}>20 %</Text>
+                        <Text style = {styles.value}>{value} %</Text>
                         <Text style= {styles.valueTitle}>Humidity</Text>
                     </View>
                 </View>
@@ -44,9 +59,9 @@ const styles = StyleSheet.create({
     },
     cardImage: {
         backgroundColor: '#fff',
-        flex: 0.7,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        flex: 0.6,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
     },
     arrowConteiner: {
         marginTop: 35,
@@ -64,11 +79,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     namePlantBox: {
-        marginTop: 10,
+        marginTop: 15,
         paddingHorizontal: 20
     },
     namePlant: {
-        fontSize: 24,
+        fontSize: 34,
         fontWeight: '700',
         color: '#fff',
         fontFamily: 'Roboto'
